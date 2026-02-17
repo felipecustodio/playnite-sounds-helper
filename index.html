@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Playnite Sounds Helper</title>
+    <link rel="icon" href="favicon.ico">
     <script src="https://cdn.tailwindcss.com/3.4.5"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -41,13 +42,16 @@
             background-color: rgba(255, 255, 255, 0.06);
             border: 1px solid rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(16px);
-            transition: all 0.3s ease;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
         }
 
         .card-glass:hover {
+            background-color: rgba(255, 255, 255, 0.08);
+        }
+
+        .card-glass.card-configured:hover {
             box-shadow: 0 0 12px rgba(255, 149, 0, 0.3);
             transform: scale(1.01);
-            background-color: rgba(255, 255, 255, 0.08);
         }
 
         .input-file-style {
@@ -88,7 +92,7 @@
 
         .title-glow {
             position: relative;
-            text-shadow: 0 0 12px rgba(255, 149, 0, 0.5), 0 0 28px rgba(255, 111, 0, 0.35);
+            filter: drop-shadow(0 0 10px rgba(255, 149, 0, 0.55)) drop-shadow(0 0 24px rgba(255, 111, 0, 0.4));
             animation: titlePulse 6s ease-in-out infinite;
         }
 
@@ -110,10 +114,10 @@
 
         @keyframes titlePulse {
             0%, 100% {
-                text-shadow: 0 0 12px rgba(255, 149, 0, 0.5), 0 0 28px rgba(255, 111, 0, 0.35);
+                filter: drop-shadow(0 0 10px rgba(255, 149, 0, 0.55)) drop-shadow(0 0 24px rgba(255, 111, 0, 0.4));
             }
             50% {
-                text-shadow: 0 0 18px rgba(255, 184, 77, 0.65), 0 0 36px rgba(255, 140, 0, 0.45);
+                filter: drop-shadow(0 0 16px rgba(255, 184, 77, 0.7)) drop-shadow(0 0 32px rgba(255, 140, 0, 0.5));
             }
         }
 
@@ -184,37 +188,79 @@
         .instruction-content.expanded {
             max-height: 1000px; /* This value needs to be larger than the content height */
         }
+
+        /* Preview button fade transition */
+        .preview-button {
+            transition: opacity 0.2s ease;
+        }
+
+        /* Card configured state */
+        .card-configured {
+            border-color: rgba(255, 150, 38, 0.4) !important;
+        }
+
+        /* Download button muted state (no files uploaded) */
+        .download-button-muted {
+            opacity: 0.4;
+            pointer-events: none;
+            cursor: not-allowed;
+        }
+
+        /* Toast notifications */
+        #toast-container {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            z-index: 200;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            pointer-events: none;
+        }
+
+        .toast {
+            background: rgba(20, 20, 22, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 10px;
+            padding: 0.625rem 1rem;
+            color: #ECECEC;
+            font-size: 0.875rem;
+            backdrop-filter: blur(12px);
+            pointer-events: auto;
+            animation: toastIn 0.2s ease;
+            max-width: 320px;
+        }
+
+        .toast.error {
+            border-color: rgba(239, 68, 68, 0.4);
+            color: #fca5a5;
+        }
+
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes toastOut {
+            from { opacity: 1; transform: translateY(0); }
+            to   { opacity: 0; transform: translateY(6px); }
+        }
     </style>
     <script>
-        // Preload background image for smoother experience
-        document.addEventListener('DOMContentLoaded', function() {
-            const img = new Image();
-            img.src = 'assets/bg-optimized.jpg';
-        });
-
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: {
-                            50: '#EBF5FF',
-                            500: '#3B82F6',
-                            600: '#2563EB'
-                        }
-                    }
-                }
-            }
-        }
+        tailwind.config = {}
 
         // Toggle instruction card
         document.addEventListener('DOMContentLoaded', function() {
             const toggleButton = document.getElementById('toggleInstructions');
             const chevronIcon = document.getElementById('chevronIcon');
             const instructionContent = document.getElementById('instructionContent');
+            const instructionHeader = document.getElementById('instructionHeader');
 
             toggleButton.addEventListener('click', function() {
-                chevronIcon.classList.toggle('chevron-rotate');
-                instructionContent.classList.toggle('expanded');
+                const isExpanded = instructionContent.classList.toggle('expanded');
+                chevronIcon.classList.toggle('chevron-rotate', isExpanded);
+                toggleButton.setAttribute('aria-expanded', isExpanded);
+                instructionHeader.classList.toggle('mb-4', isExpanded);
             });
         });
     </script>
@@ -223,16 +269,17 @@
     <canvas id="shader-canvas"></canvas>
     <div class="shader-overlay"></div>
     <div class="max-w-6xl mx-auto px-4 py-12 relative">
-        <div class="flex items-center justify-center mb-12">
+        <div class="flex items-center justify-center mb-3 flex-wrap gap-y-2">
             <img src="assets/playnite-optimized.png" alt="Playnite Logo" class="w-12 h-12 mr-4 drop-shadow-lg logo-glow">
             <h1 class="text-4xl font-bold text-white title-gradient title-glow">Playnite Sounds Helper</h1>
         </div>
+        <p class="text-center text-gray-400 text-sm mb-10">Upload audio files for each Playnite event, then download your pack as a ready-to-install ZIP.</p>
 
         <!-- Collapsible instruction card -->
         <div class="card-glass instruction-card rounded-xl p-6 backdrop-blur-xl mb-6">
-            <div class="flex justify-between items-center mb-4">
+            <div id="instructionHeader" class="flex justify-between items-center">
                 <h2 class="text-xl font-semibold title-gradient">How to Install Sound Packs</h2>
-                <button id="toggleInstructions" class="w-8 h-8 flex items-center justify-center bg-white/10 hover:bg-white/20 rounded-full text-white transition-all duration-200 ease-in-out">
+                <button id="toggleInstructions" aria-expanded="false" aria-controls="instructionContent" class="w-8 h-8 flex items-center justify-center bg-white/10 hover:bg-white/20 rounded-full text-white transition-all duration-200 ease-in-out">
                     <svg id="chevronIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 icon-accent" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
                     </svg>
@@ -273,23 +320,37 @@
             </div>
         </div>
 
-        <!-- Download button with text input for pack name -->
-        <div class="text-center mb-10">
-            <div class="flex items-center justify-center space-x-3 max-w-xl mx-auto">
-                <div class="relative flex-grow">
-                    <input type="text" id="packName" placeholder="Enter sound pack name" class="w-full py-2.5 px-4 rounded-xl bg-white/10 border border-white/10 focus:border-[#ff9626] focus:outline-none focus:ring-2 focus:ring-[#ff9626] text-white placeholder-gray-400 transition-all duration-300">
+        <div id="fileContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+        <!-- Progress indicator + download controls -->
+        <div class="mt-10">
+            <div class="max-w-xl mx-auto mb-6">
+                <div class="flex justify-between items-center mb-1.5">
+                    <span id="progressCounter" class="text-xs text-gray-400">No events configured</span>
+                    <span id="progressLabel" class="text-xs text-gray-500"></span>
                 </div>
-                <button id="downloadAll" class="glow-button bg-white/10 hover:bg-white/15 text-white font-medium py-2.5 px-5 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#ff9626] transition-all duration-300 ease-in-out transform flex items-center justify-center space-x-2 whitespace-nowrap">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 icon-accent" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
-                    </svg>
-                    <span>Download Sound Pack</span>
-                </button>
+                <div class="w-full bg-white/10 rounded-full h-1">
+                    <div id="progressBar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="9" class="h-1 rounded-full bg-[#ff9626] transition-all duration-300 ease-out" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <div class="flex items-center justify-center gap-3 max-w-xl mx-auto flex-wrap">
+                    <div class="relative flex-grow min-w-0">
+                        <input type="text" id="packName" placeholder="Enter sound pack name" class="w-full py-2.5 px-4 rounded-xl bg-white/10 border border-white/10 focus:border-[#ff9626] focus:outline-none focus:ring-2 focus:ring-[#ff9626] text-white placeholder-gray-400 transition-all duration-300">
+                    </div>
+                    <button id="downloadAll" class="download-button-muted glow-button bg-white/10 hover:bg-white/15 text-white font-medium py-2.5 px-5 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#ff9626] transition-all duration-300 ease-in-out transform flex items-center justify-center gap-2 whitespace-nowrap flex-shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 icon-accent" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                        <span>Download Sound Pack</span>
+                    </button>
+                </div>
             </div>
         </div>
-
-        <div id="fileContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
     </div>
+
+    <div id="toast-container" role="region" aria-live="polite" aria-label="Notifications"></div>
     <script src="index.js"></script>
     <script src="shader-background.js"></script>
 </body>
