@@ -10,7 +10,7 @@ Playnite Sounds Manager is a **static web application** (no build process, no pa
 
 ```bash
 # Serve locally (any static server works)
-python3 -m http.server 3000
+just dev  # or: uv run python3 -m http.server 3000
 # Then open http://localhost:3000/index.html
 ```
 

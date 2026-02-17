@@ -203,70 +203,125 @@ const audioUtils = {
     }
 };
 
-// Function to create the HTML element for a single audio event
+// --- Global UI helpers ---
+
+function showToast(message, type = 'info') {
+    const container = document.getElementById('toast-container');
+    if (!container) return;
+    const toast = document.createElement('div');
+    toast.className = type === 'error' ? 'toast error' : 'toast';
+    toast.textContent = message;
+    container.appendChild(toast);
+    setTimeout(() => {
+        toast.style.animation = 'toastOut 0.2s ease forwards';
+        toast.addEventListener('animationend', () => toast.remove());
+    }, 3000);
+}
+
+function updateProgress() {
+    const configuredEvents = new Set();
+    Object.keys(uploadedFiles).forEach(key => configuredEvents.add(key.slice(2)));
+    const count = configuredEvents.size;
+    const total = audioFiles.length;
+
+    const progressCounter = document.getElementById('progressCounter');
+    const progressBar = document.getElementById('progressBar');
+    const progressLabel = document.getElementById('progressLabel');
+    const downloadBtn = document.getElementById('downloadAll');
+
+    if (progressCounter) {
+        progressCounter.textContent = count === 0
+            ? 'No events configured'
+            : `${count} of ${total} events configured`;
+    }
+    if (progressBar) {
+        progressBar.style.width = `${(count / total) * 100}%`;
+        progressBar.setAttribute('aria-valuenow', count);
+    }
+    if (progressLabel) {
+        if (count === 0) progressLabel.textContent = '';
+        else if (count === total) progressLabel.textContent = 'All done!';
+        else progressLabel.textContent = `${total - count} remaining`;
+    }
+    if (downloadBtn) {
+        const isMuted = count === 0;
+        downloadBtn.classList.toggle('download-button-muted', isMuted);
+        downloadBtn.setAttribute('tabindex', isMuted ? '-1' : '0');
+        if (isMuted) {
+            downloadBtn.setAttribute('aria-disabled', 'true');
+        } else {
+            downloadBtn.removeAttribute('aria-disabled');
+        }
+    }
+}
+
+// --- Card factory ---
+
 function createAudioEventElement(file) {
     const fileBox = document.createElement('div');
     fileBox.className = 'card-glass rounded-xl p-5 flex flex-col justify-between backdrop-blur-xl';
-    let audioPlayer = null; // To hold the audio element for preview
-    let currentPreviewFile = null; // To track which file is loaded in the player
-    let currentPreviewUrl = null; // Object URL for the current preview — must be revoked when replaced
+    fileBox.setAttribute('role', 'group');
+    fileBox.setAttribute('aria-labelledby', `cardTitle_${file.name}`);
+    let audioPlayer = null;
+    let currentPreviewFile = null;
+    let currentPreviewUrl = null;
 
     fileBox.innerHTML = `
         <div>
             <div class="flex justify-between items-center mb-3">
                 <div class="flex items-center gap-3">
-                    <div class="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-white/10 rounded-full text-blue-400">
+                    <div class="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-white/10 rounded-full text-[#ff9626]">
                         ${file.icon}
                     </div>
-                    <h3 class="text-lg font-semibold title-gradient">${file.name}</h3>
+                    <h3 id="cardTitle_${file.name}" class="text-lg font-semibold title-gradient">${file.name}</h3>
                 </div>
-                <button title="Preview Sound" class="preview-button hidden w-8 h-8 flex items-center justify-center bg-white/10 hover:bg-white/20 rounded-full text-white transition-all duration-200 ease-in-out">
+                <button title="Preview sound" aria-label="Preview sound" class="preview-button opacity-0 pointer-events-none w-8 h-8 flex items-center justify-center bg-white/10 hover:bg-white/20 rounded-full text-[#ff9626]">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
                     </svg>
                 </button>
             </div>
             <p class="text-sm text-gray-300 mb-4 opacity-80">${file.description}</p>
-            <div id="fileInputsContainer_${file.name}" class="min-h-[120px]">
+            <div id="fileInputsContainer_${file.name}">
                 <div id="fileInputs_${file.name}" class="space-y-3">
                     <div id="singleInput_${file.name}">
-                        <label for="file_${file.name}" class="block text-xs font-medium text-gray-300 mb-1">Audio (Desktop & Fullscreen)</label>
-                        <div class="flex items-center space-x-2">
-                            <input type="file" accept="audio/*" id="file_${file.name}" class="input-file-style flex-grow">
-                            <span id="fileName_single_${file.name}" class="text-xs text-gray-400 truncate max-w-[100px]" title=""></span>
+                        <label for="file_${file.name}" class="block text-xs font-medium text-gray-300 mb-1">Audio (Desktop &amp; Fullscreen)</label>
+                        <input type="file" accept="audio/*" id="file_${file.name}" class="input-file-style block w-full text-xs text-gray-300 cursor-pointer">
+                        <div class="flex items-center gap-2 mt-1 min-h-[1.25rem]">
+                            <span id="fileName_single_${file.name}" class="text-xs text-gray-400 truncate flex-1 min-w-0 hidden" title=""></span>
+                            <button id="clear_single_${file.name}" class="hidden text-xs text-gray-500 hover:text-red-400 transition-colors flex-shrink-0" title="Remove file" aria-label="Remove file">✕</button>
                         </div>
                     </div>
                     <div id="doubleInput_${file.name}" class="hidden">
                         <div class="mb-3">
                             <label for="file_D_${file.name}" class="block text-xs font-medium text-gray-300 mb-1">Audio (Desktop)</label>
-                            <div class="flex items-center space-x-2">
-                                <input type="file" accept="audio/*" id="file_D_${file.name}" class="input-file-style flex-grow">
-                                <span id="fileName_D_${file.name}" class="text-xs text-gray-400 truncate max-w-[100px]" title=""></span>
+                            <input type="file" accept="audio/*" id="file_D_${file.name}" class="input-file-style block w-full text-xs text-gray-300 cursor-pointer">
+                            <div class="flex items-center gap-2 mt-1 min-h-[1.25rem]">
+                                <span id="fileName_D_${file.name}" class="text-xs text-gray-400 truncate flex-1 min-w-0 hidden" title=""></span>
+                                <button id="clear_D_${file.name}" class="hidden text-xs text-gray-500 hover:text-red-400 transition-colors flex-shrink-0" title="Remove file" aria-label="Remove file">✕</button>
                             </div>
                         </div>
                         <div>
                             <label for="file_F_${file.name}" class="block text-xs font-medium text-gray-300 mb-1">Audio (Fullscreen)</label>
-                            <div class="flex items-center space-x-2">
-                                <input type="file" accept="audio/*" id="file_F_${file.name}" class="input-file-style flex-grow">
-                                <span id="fileName_F_${file.name}" class="text-xs text-gray-400 truncate max-w-[100px]" title=""></span>
+                            <input type="file" accept="audio/*" id="file_F_${file.name}" class="input-file-style block w-full text-xs text-gray-300 cursor-pointer">
+                            <div class="flex items-center gap-2 mt-1 min-h-[1.25rem]">
+                                <span id="fileName_F_${file.name}" class="text-xs text-gray-400 truncate flex-1 min-w-0 hidden" title=""></span>
+                                <button id="clear_F_${file.name}" class="hidden text-xs text-gray-500 hover:text-red-400 transition-colors flex-shrink-0" title="Remove file" aria-label="Remove file">✕</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="mt-4 pt-3 border-t border-white/10">
+        <div class="mt-4 pt-3 border-t border-white/10 space-y-1.5">
             <label class="inline-flex items-center cursor-pointer">
-                <input type="checkbox" id="same_${file.name}" class="form-checkbox h-4 w-4 text-blue-500 rounded-md bg-white/10 border-none focus:ring-blue-400 focus:ring-offset-gray-900">
-                <span class="ml-2 text-sm text-gray-300">Use separate desktop/fullscreen audio</span>
+                <input type="checkbox" id="same_${file.name}" class="h-4 w-4 rounded cursor-pointer" style="accent-color: #ff9626;">
+                <span class="ml-2 text-sm text-gray-300">Use separate audio per mode</span>
             </label>
+            <p class="text-xs text-gray-500 ml-6">Assign different sounds for desktop vs fullscreen mode</p>
+            <button id="useForAll_${file.name}" class="hidden text-xs text-gray-500 hover:text-[#ff9626] transition-colors ml-0 pt-0.5" title="Apply this sound to all events">&#8594; Use this sound for all events</button>
         </div>
     `;
-
-    // Add shared file input styles dynamically to avoid repetition in innerHTML
-    fileBox.querySelectorAll('input[type="file"]').forEach(input => {
-        input.className = 'input-file-style block w-full text-xs text-gray-300 cursor-pointer';
-    });
 
     // Get references to elements
     const sameAudioCheckbox = fileBox.querySelector(`#same_${file.name}`);
