@@ -1,47 +1,47 @@
 const audioFiles = [
     {
         name: 'ApplicationStarted',
-        description: 'Sound played when the application starts',
+        description: 'Plays once when Playnite launches',
         icon: '<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>'
     },
     {
         name: 'ApplicationStopped',
-        description: 'Sound played when the application stops',
+        description: 'Plays when Playnite is closed',
         icon: '<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8 7a1 1 0 00-1 1v4a1 1 0 001 1h4a1 1 0 001-1V8a1 1 0 00-1-1H8z" clip-rule="evenodd" /></svg>'
     },
     {
         name: 'GameInstalled',
-        description: 'Sound played when a game is installed',
+        description: 'Plays when a game finishes installing',
         icon: '<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>'
     },
     {
         name: 'GameSelected',
-        description: 'Sound played when a game is selected',
+        description: 'Plays each time you highlight a different game — keep it short',
         icon: '<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>'
     },
     {
         name: 'GameStarted',
-        description: 'Sound played when a game starts',
+        description: 'Plays after a game has fully launched',
         icon: '<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor"><path d="M11 3a1 1 0 10-2 0v1a1 1 0 102 0V3zM15.657 5.757a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414l.707-.707zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zM5.05 6.464A1 1 0 106.464 5.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707zM5 10a1 1 0 01-1 1H3a1 1 0 110-2h1a1 1 0 011 1z" /><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V5z" clip-rule="evenodd" /></svg>'
     },
     {
         name: 'GameStarting',
-        description: 'Sound played while a game is starting',
+        description: 'Plays while Playnite is launching the game executable',
         icon: '<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>'
     },
     {
         name: 'GameStopped',
-        description: 'Sound played when a game stops',
+        description: 'Plays when you quit a game and return to Playnite',
         icon: '<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8 7a1 1 0 00-1 1v4a1 1 0 001 1h4a1 1 0 001-1V8a1 1 0 00-1-1H8z" clip-rule="evenodd" /></svg>'
     },
     {
         name: 'GameUninstalled',
-        description: 'Sound played when a game is uninstalled',
+        description: 'Plays when a game is uninstalled from your library',
         icon: '<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>'
     },
     {
         name: 'LibraryUpdated',
-        description: 'Sound played when the game library is updated',
+        description: 'Plays after Playnite finishes scanning for new games',
         icon: '<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" /></svg>'
     }
 ];
@@ -49,6 +49,16 @@ const audioFiles = [
 const fileContainer = document.getElementById('fileContainer');
 const downloadAllButton = document.getElementById('downloadAll');
 const uploadedFiles = {};
+const cardRefreshCallbacks = [];
+
+function applyFileToAllEvents(sourceFile) {
+    audioFiles.forEach(eventDef => {
+        uploadedFiles[`D_${eventDef.name}`] = sourceFile;
+        uploadedFiles[`F_${eventDef.name}`] = sourceFile;
+    });
+    cardRefreshCallbacks.forEach(fn => fn());
+    showToast(`Applied to all ${audioFiles.length} events.`);
+}
 
 // Shared AudioContext — created once, reused for all conversions
 const sharedAudioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -268,54 +278,67 @@ function createAudioEventElement(file) {
     const fileNameSingleSpan = fileBox.querySelector(`#fileName_single_${file.name}`);
     const fileNameDesktopSpan = fileBox.querySelector(`#fileName_D_${file.name}`);
     const fileNameFullscreenSpan = fileBox.querySelector(`#fileName_F_${file.name}`);
+    const clearButtonSingle = fileBox.querySelector(`#clear_single_${file.name}`);
+    const clearButtonDesktop = fileBox.querySelector(`#clear_D_${file.name}`);
+    const clearButtonFullscreen = fileBox.querySelector(`#clear_F_${file.name}`);
+    const useForAllButton = fileBox.querySelector(`#useForAll_${file.name}`);
     const previewButton = fileBox.querySelector('.preview-button');
+
     const playIconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
     </svg>`;
     const pauseIconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M5.75 4.75a.75.75 0 00-.75.75v9.5c0 .414.336.75.75.75h1.5a.75.75 0 00.75-.75v-9.5a.75.75 0 00-.75-.75h-1.5zm6.5 0a.75.75 0 00-.75.75v9.5c0 .414.336.75.75.75h1.5a.75.75 0 00.75-.75v-9.5a.75.75 0 00-.75-.75h-1.5z" /></svg>`;
 
-    // Function to update the displayed filename spans
+    function updateCardState() {
+        const hasFile = !!(uploadedFiles[`D_${file.name}`] || uploadedFiles[`F_${file.name}`]);
+        fileBox.classList.toggle('card-configured', hasFile);
+        useForAllButton.classList.toggle('hidden', !hasFile);
+        updateProgress();
+    }
+
     function updateFileNameDisplays() {
         const desktopFile = uploadedFiles[`D_${file.name}`];
         const fullscreenFile = uploadedFiles[`F_${file.name}`];
         const isChecked = sameAudioCheckbox.checked;
 
-        // Update text and title attribute for potential truncation
         const singleFileName = desktopFile ? desktopFile.name : '';
         fileNameSingleSpan.textContent = singleFileName;
         fileNameSingleSpan.title = singleFileName;
+        fileNameSingleSpan.classList.toggle('hidden', isChecked || !singleFileName);
+        clearButtonSingle.classList.toggle('hidden', isChecked || !singleFileName);
 
         const desktopFileName = desktopFile ? desktopFile.name : '';
         fileNameDesktopSpan.textContent = desktopFileName;
         fileNameDesktopSpan.title = desktopFileName;
+        fileNameDesktopSpan.classList.toggle('hidden', !isChecked || !desktopFileName);
+        clearButtonDesktop.classList.toggle('hidden', !isChecked || !desktopFileName);
 
         const fullscreenFileName = fullscreenFile ? fullscreenFile.name : '';
         fileNameFullscreenSpan.textContent = fullscreenFileName;
         fileNameFullscreenSpan.title = fullscreenFileName;
-
-        // Adjust visibility based on checkbox state - inverted now
-        fileNameSingleSpan.classList.toggle('hidden', isChecked || !singleFileName);
-        fileNameDesktopSpan.classList.toggle('hidden', !isChecked || !desktopFileName);
         fileNameFullscreenSpan.classList.toggle('hidden', !isChecked || !fullscreenFileName);
+        clearButtonFullscreen.classList.toggle('hidden', !isChecked || !fullscreenFileName);
     }
 
-    // Function to update preview button visibility and state
     function updatePreviewButton() {
         const fileToPreview = uploadedFiles[`D_${file.name}`] || uploadedFiles[`F_${file.name}`];
         if (fileToPreview) {
-            previewButton.classList.remove('hidden');
+            previewButton.classList.remove('opacity-0', 'pointer-events-none');
             if (currentPreviewFile !== fileToPreview) {
-                // Revoke the old object URL before creating a new one
                 if (audioPlayer) audioPlayer.pause();
                 if (currentPreviewUrl) URL.revokeObjectURL(currentPreviewUrl);
                 currentPreviewUrl = URL.createObjectURL(fileToPreview);
                 audioPlayer = new Audio(currentPreviewUrl);
                 currentPreviewFile = fileToPreview;
                 previewButton.innerHTML = playIconSvg;
-                audioPlayer.onended = () => { previewButton.innerHTML = playIconSvg; };
+                previewButton.setAttribute('aria-label', 'Preview sound');
+                audioPlayer.onended = () => {
+                    previewButton.innerHTML = playIconSvg;
+                    previewButton.setAttribute('aria-label', 'Preview sound');
+                };
             }
         } else {
-            previewButton.classList.add('hidden');
+            previewButton.classList.add('opacity-0', 'pointer-events-none');
             if (audioPlayer) audioPlayer.pause();
             if (currentPreviewUrl) URL.revokeObjectURL(currentPreviewUrl);
             audioPlayer = null;
@@ -324,50 +347,93 @@ function createAudioEventElement(file) {
         }
     }
 
-    // Event listener for the checkbox - INVERTED LOGIC
+    // Register refresh callback for "Use for all" cross-card updates
+    function refreshCard() {
+        updatePreviewButton();
+        updateFileNameDisplays();
+        updateCardState();
+    }
+    cardRefreshCallbacks.push(refreshCard);
+
+    // Clear button handlers
+    clearButtonSingle.addEventListener('click', () => {
+        delete uploadedFiles[`D_${file.name}`];
+        delete uploadedFiles[`F_${file.name}`];
+        fileInputSingle.value = '';
+        updatePreviewButton();
+        updateFileNameDisplays();
+        updateCardState();
+    });
+
+    clearButtonDesktop.addEventListener('click', () => {
+        delete uploadedFiles[`D_${file.name}`];
+        fileInputDesktop.value = '';
+        updatePreviewButton();
+        updateFileNameDisplays();
+        updateCardState();
+    });
+
+    clearButtonFullscreen.addEventListener('click', () => {
+        delete uploadedFiles[`F_${file.name}`];
+        fileInputFullscreen.value = '';
+        updatePreviewButton();
+        updateFileNameDisplays();
+        updateCardState();
+    });
+
+    // "Use for all" button
+    useForAllButton.addEventListener('click', () => {
+        const sourceFile = uploadedFiles[`D_${file.name}`] || uploadedFiles[`F_${file.name}`];
+        if (sourceFile) applyFileToAllEvents(sourceFile);
+    });
+
+    // Checkbox: toggle single/dual input mode — stop audio first to avoid ghost playback
     sameAudioCheckbox.addEventListener('change', (event) => {
+        if (audioPlayer) {
+            audioPlayer.pause();
+            audioPlayer.currentTime = 0;
+            previewButton.innerHTML = playIconSvg;
+            previewButton.setAttribute('aria-label', 'Preview sound');
+        }
+
         const isChecked = event.target.checked;
         const desktopFileKey = `D_${file.name}`;
         const fullscreenFileKey = `F_${file.name}`;
 
         if (isChecked) {
-            // Switching TO double input mode (now when checked)
             singleInputContainer.classList.add('hidden');
             doubleInputContainer.classList.remove('hidden');
-            fileInputDesktop.value = ''; // Clear file inputs visually
+            fileInputDesktop.value = '';
             fileInputFullscreen.value = '';
 
-            // Get the shared file to use as desktop file
             const fileFromSingle = uploadedFiles[desktopFileKey];
             if (fileFromSingle) {
                 uploadedFiles[desktopFileKey] = fileFromSingle;
-                // Clear the fullscreen file when separating
                 delete uploadedFiles[fullscreenFileKey];
             } else {
                 delete uploadedFiles[desktopFileKey];
                 delete uploadedFiles[fullscreenFileKey];
             }
         } else {
-            // Switching TO single input mode (now when unchecked)
-            // Keep any file that was assigned to desktop
             const fileToKeep = uploadedFiles[desktopFileKey] || uploadedFiles[fullscreenFileKey];
             singleInputContainer.classList.remove('hidden');
             doubleInputContainer.classList.add('hidden');
-            fileInputSingle.value = ''; // Clear file input visually
+            fileInputSingle.value = '';
 
             if (fileToKeep) {
                 uploadedFiles[desktopFileKey] = fileToKeep;
-                uploadedFiles[fullscreenFileKey] = fileToKeep; // Both point to the same file
+                uploadedFiles[fullscreenFileKey] = fileToKeep;
             } else {
                 delete uploadedFiles[desktopFileKey];
                 delete uploadedFiles[fullscreenFileKey];
             }
         }
-        updatePreviewButton(); // Update preview state
-        updateFileNameDisplays(); // Update filename display
+        updatePreviewButton();
+        updateFileNameDisplays();
+        updateCardState();
     });
 
-    // Event listener for the single file input
+    // File input handlers
     fileInputSingle.addEventListener('change', async (event) => {
         const uploadedFile = event.target.files[0];
         if (uploadedFile) {
@@ -375,15 +441,14 @@ function createAudioEventElement(file) {
             uploadedFiles[`D_${file.name}`] = wavFile;
             uploadedFiles[`F_${file.name}`] = wavFile;
         } else {
-            // Clear if the user cancels file selection
             delete uploadedFiles[`D_${file.name}`];
             delete uploadedFiles[`F_${file.name}`];
         }
         updatePreviewButton();
-        updateFileNameDisplays(); // Update filename display
+        updateFileNameDisplays();
+        updateCardState();
     });
 
-    // Event listener for the desktop file input
     fileInputDesktop.addEventListener('change', async (event) => {
         const uploadedFile = event.target.files[0];
         if (uploadedFile) {
@@ -393,10 +458,10 @@ function createAudioEventElement(file) {
             delete uploadedFiles[`D_${file.name}`];
         }
         updatePreviewButton();
-        updateFileNameDisplays(); // Update filename display
+        updateFileNameDisplays();
+        updateCardState();
     });
 
-    // Event listener for the fullscreen file input
     fileInputFullscreen.addEventListener('change', async (event) => {
         const uploadedFile = event.target.files[0];
         if (uploadedFile) {
@@ -406,23 +471,25 @@ function createAudioEventElement(file) {
             delete uploadedFiles[`F_${file.name}`];
         }
         updatePreviewButton();
-        updateFileNameDisplays(); // Update filename display
+        updateFileNameDisplays();
+        updateCardState();
     });
 
-    // Event listener for the preview button
+    // Preview button: toggle play/pause
     previewButton.addEventListener('click', () => {
         if (!audioPlayer) return;
         if (audioPlayer.paused) {
             audioPlayer.play();
             previewButton.innerHTML = pauseIconSvg;
+            previewButton.setAttribute('aria-label', 'Pause preview');
         } else {
             audioPlayer.pause();
-            audioPlayer.currentTime = 0; // Reset playback to start
+            audioPlayer.currentTime = 0;
             previewButton.innerHTML = playIconSvg;
+            previewButton.setAttribute('aria-label', 'Preview sound');
         }
     });
 
-    // Initial setup for filename display
     updateFileNameDisplays();
 
     return fileBox;
@@ -434,20 +501,30 @@ audioFiles.forEach(file => {
     fileContainer.appendChild(fileElement);
 });
 
+// Set initial progress state (0 / 9, button muted)
+updateProgress();
+
+// Enter key in pack name field triggers download
+document.getElementById('packName').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !downloadAllButton.classList.contains('download-button-muted')) {
+        downloadAllButton.click();
+    }
+});
+
 // Event listener for the download button
 downloadAllButton.addEventListener('click', async () => {
     const packNameInput = document.getElementById('packName');
     const packName = packNameInput.value.trim() || 'PlayniteSoundPack';
 
     if (Object.keys(uploadedFiles).length === 0) {
-        alert('No sound files have been added. Please add at least one sound file before downloading.');
+        showToast('Add at least one sound file before downloading.', 'error');
         return;
     }
 
     // Show spinner in the button
     const originalButtonContent = downloadAllButton.innerHTML;
     downloadAllButton.innerHTML = `
-        <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <svg class="animate-spin h-5 w-5 text-[#ff9626]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
         </svg>
@@ -456,19 +533,20 @@ downloadAllButton.addEventListener('click', async () => {
     downloadAllButton.disabled = true;
     downloadAllButton.classList.add('opacity-80', 'cursor-not-allowed');
 
+    // Only show the overlay after a short delay — avoids a jarring flash for small packs
     const processingDiv = document.createElement('div');
     processingDiv.className = 'fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black/50 backdrop-blur-sm z-50';
     processingDiv.innerHTML = `
         <div class="bg-white/10 rounded-xl p-6 max-w-md text-center">
-            <svg class="animate-spin h-10 w-10 text-blue-400 mx-auto mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <svg class="animate-spin h-10 w-10 text-[#ff9626] mx-auto mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>
-            <p class="text-white text-lg font-medium">Processing audio files...</p>
-            <p class="text-gray-300 mt-2">Converting all files to WAV format.</p>
+            <p class="text-white text-lg font-medium">Packaging your sound files...</p>
+            <p class="text-gray-300 mt-2">Creating ZIP archive for Playnite.</p>
         </div>
     `;
-    document.body.appendChild(processingDiv);
+    const overlayTimeout = setTimeout(() => document.body.appendChild(processingDiv), 250);
 
     try {
         const zip = new JSZip();
@@ -503,9 +581,10 @@ downloadAllButton.addEventListener('click', async () => {
 
     } catch (error) {
         console.error('Error creating zip file:', error);
-        alert('An error occurred while creating the zip file. Please try again.');
+        showToast('Failed to create ZIP file. Please try again.', 'error');
     } finally {
-        document.body.removeChild(processingDiv);
+        clearTimeout(overlayTimeout);
+        if (document.body.contains(processingDiv)) document.body.removeChild(processingDiv);
         downloadAllButton.innerHTML = originalButtonContent;
         downloadAllButton.disabled = false;
         downloadAllButton.classList.remove('opacity-80', 'cursor-not-allowed');
