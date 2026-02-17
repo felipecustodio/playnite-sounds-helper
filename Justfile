@@ -1,2 +1,2 @@
 dev:
-    python3 -m http.server 3000
+    uv run python3 -m http.server 3000
