@@ -95,11 +95,9 @@ npx serve .
 playnite-sounds-manager/
 ├── index.html          # Main application interface
 ├── index.js           # Application logic and audio processing
+├── shader-background.js # WebGL background animation
 ├── assets/            # Images and resources
-│   ├── bg-optimized.jpg
-│   ├── playnite-optimized.png
-│   └── screenshot.png
-├── .vscode/           # VS Code configuration
+│   └── playnite-optimized.png
 └── README.md          # This file
 ```
 

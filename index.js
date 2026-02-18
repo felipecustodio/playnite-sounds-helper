@@ -84,7 +84,10 @@ const audioUtils = {
             const audioContext = sharedAudioContext;
 
             // Decode audio data
-            const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+            const audioBuffer = await audioContext.decodeAudioData(arrayBuffer)
+                .catch(decodeError => {
+                    throw new Error(`Could not decode audio file: ${decodeError.message}`);
+                });
 
             // Convert to WAV
             const wavBlob = await this.audioBufferToWAV(audioBuffer);
@@ -98,14 +101,18 @@ const audioUtils = {
             return wavFile;
         } catch (error) {
             console.error('Error converting audio to WAV:', error);
-            // Return original file if conversion fails
-            return audioFile;
+            showToast(`Error converting "${audioFile.name}" to WAV: ${error.message}`, 'error');
+            // Returning original file is still an option, but the toast provides immediate feedback
+            return audioFile; 
         }
     },
 
     // Function to convert AudioBuffer to WAV Blob
     audioBufferToWAV: function(buffer) {
         return new Promise(resolve => {
+            const normalizeCheckbox = document.getElementById('normalizeVolume');
+            const shouldNormalize = normalizeCheckbox ? normalizeCheckbox.checked : true; // Default to true if checkbox not found
+
             const numOfChannels = buffer.numberOfChannels;
             const sampleRate = buffer.sampleRate;
             const format = 1; // PCM
@@ -118,13 +125,16 @@ const audioUtils = {
                 result = buffer.getChannelData(0);
             }
 
-            // Normalize to peak amplitude so the loudest sample hits 0 dBFS without clipping
-            let peak = 0;
-            for (let i = 0; i < result.length; i++) {
-                const abs = Math.abs(result[i]);
-                if (abs > peak) peak = abs;
+            let gain = 1.0;
+            if (shouldNormalize) {
+                // Normalize to peak amplitude so the loudest sample hits 0 dBFS without clipping
+                let peak = 0;
+                for (let i = 0; i < result.length; i++) {
+                    const abs = Math.abs(result[i]);
+                    if (abs > peak) peak = abs;
+                }
+                gain = peak > 0 ? 1.0 / peak : 1.0;
             }
-            const gain = peak > 0 ? 1.0 / peak : 1.0;
 
             // Convert float32 to int16
             const buffer16 = new Int16Array(result.length);
@@ -286,7 +296,10 @@ function createAudioEventElement(file) {
                 <div id="fileInputs_${file.name}" class="space-y-3">
                     <div id="singleInput_${file.name}">
                         <label for="file_${file.name}" class="block text-xs font-medium text-gray-300 mb-1">Audio (Desktop &amp; Fullscreen)</label>
-                        <input type="file" accept="audio/*" id="file_${file.name}" class="input-file-style block w-full text-xs text-gray-300 cursor-pointer">
+                        <div class="input-file-area">
+                            <span class="text-gray-500 text-sm">Drag &amp; drop or click to upload</span>
+                            <input type="file" accept="audio/*" id="file_${file.name}" class="input-file-style block w-full text-xs text-gray-300 cursor-pointer">
+                        </div>
                         <div class="flex items-center gap-2 mt-1 min-h-[1.25rem]">
                             <span id="fileName_single_${file.name}" class="text-xs text-gray-400 truncate flex-1 min-w-0 hidden" title=""></span>
                             <button id="clear_single_${file.name}" class="hidden text-xs text-gray-500 hover:text-red-400 transition-colors flex-shrink-0" title="Remove file" aria-label="Remove file">✕</button>
@@ -295,7 +308,10 @@ function createAudioEventElement(file) {
                     <div id="doubleInput_${file.name}" class="hidden">
                         <div class="mb-3">
                             <label for="file_D_${file.name}" class="block text-xs font-medium text-gray-300 mb-1">Audio (Desktop)</label>
-                            <input type="file" accept="audio/*" id="file_D_${file.name}" class="input-file-style block w-full text-xs text-gray-300 cursor-pointer">
+                            <div class="input-file-area">
+                                <span class="text-gray-500 text-sm">Drag &amp; drop or click to upload</span>
+                                <input type="file" accept="audio/*" id="file_D_${file.name}" class="input-file-style block w-full text-xs text-gray-300 cursor-pointer">
+                            </div>
                             <div class="flex items-center gap-2 mt-1 min-h-[1.25rem]">
                                 <span id="fileName_D_${file.name}" class="text-xs text-gray-400 truncate flex-1 min-w-0 hidden" title=""></span>
                                 <button id="clear_D_${file.name}" class="hidden text-xs text-gray-500 hover:text-red-400 transition-colors flex-shrink-0" title="Remove file" aria-label="Remove file">✕</button>
@@ -303,7 +319,10 @@ function createAudioEventElement(file) {
                         </div>
                         <div>
                             <label for="file_F_${file.name}" class="block text-xs font-medium text-gray-300 mb-1">Audio (Fullscreen)</label>
-                            <input type="file" accept="audio/*" id="file_F_${file.name}" class="input-file-style block w-full text-xs text-gray-300 cursor-pointer">
+                            <div class="input-file-area">
+                                <span class="text-gray-500 text-sm">Drag &amp; drop or click to upload</span>
+                                <input type="file" accept="audio/*" id="file_F_${file.name}" class="input-file-style block w-full text-xs text-gray-300 cursor-pointer">
+                            </div>
                             <div class="flex items-center gap-2 mt-1 min-h-[1.25rem]">
                                 <span id="fileName_F_${file.name}" class="text-xs text-gray-400 truncate flex-1 min-w-0 hidden" title=""></span>
                                 <button id="clear_F_${file.name}" class="hidden text-xs text-gray-500 hover:text-red-400 transition-colors flex-shrink-0" title="Remove file" aria-label="Remove file">✕</button>
@@ -315,7 +334,7 @@ function createAudioEventElement(file) {
         </div>
         <div class="mt-4 pt-3 border-t border-white/10 space-y-1.5">
             <label class="inline-flex items-center cursor-pointer">
-                <input type="checkbox" id="same_${file.name}" class="h-4 w-4 rounded cursor-pointer" style="accent-color: #ff9626;">
+                <input type="checkbox" id="same_${file.name}" class="h-4 w-4 rounded cursor-pointer" style="accent-color: #E0E0E0;">
                 <span class="ml-2 text-sm text-gray-300">Use separate audio per mode</span>
             </label>
             <p class="text-xs text-gray-500 ml-6">Assign different sounds for desktop vs fullscreen mode</p>
@@ -338,6 +357,43 @@ function createAudioEventElement(file) {
     const clearButtonFullscreen = fileBox.querySelector(`#clear_F_${file.name}`);
     const useForAllButton = fileBox.querySelector(`#useForAll_${file.name}`);
     const previewButton = fileBox.querySelector('.preview-button');
+
+    // Drag and drop functionality
+    const setupDragAndDrop = (inputElement) => {
+        const dropArea = inputElement.closest('.input-file-area');
+        if (!dropArea) return;
+
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropArea.addEventListener(eventName, () => dropArea.classList.add('drag-over'), false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, () => dropArea.classList.remove('drag-over'), false);
+        });
+
+        dropArea.addEventListener('drop', (e) => {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            if (files.length > 0) {
+                inputElement.files = files;
+                const event = new Event('change', { bubbles: true });
+                inputElement.dispatchEvent(event);
+            }
+        }, false);
+    };
+
+    setupDragAndDrop(fileInputSingle);
+    setupDragAndDrop(fileInputDesktop);
+    setupDragAndDrop(fileInputFullscreen);
 
     const playIconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
@@ -632,6 +688,20 @@ downloadAllButton.addEventListener('click', async () => {
         setTimeout(() => {
             URL.revokeObjectURL(url);
             document.body.removeChild(a);
+            
+            // Clear uploaded files and reset UI
+            for (const key in uploadedFiles) {
+                delete uploadedFiles[key];
+            }
+            packNameInput.value = '';
+            // Clear all file input elements
+            document.querySelectorAll('input[type="file"]').forEach(input => {
+                input.value = '';
+            });
+            // Re-render cards to reflect cleared state
+            cardRefreshCallbacks.forEach(fn => fn());
+            showToast('Sound pack downloaded successfully!', 'info');
+
         }, 100);
 
     } catch (error) {

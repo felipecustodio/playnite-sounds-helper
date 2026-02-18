@@ -11,8 +11,8 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #0E0E10; /* Fallback color */
-            color: #ECECEC;
+            background-color: #080808; /* Deep dark background */
+            color: #E0E0E0; /* Light gray text */
             position: relative;
             overflow-x: hidden; /* Prevent horizontal scrolling */
         }
@@ -39,29 +39,29 @@
         }
 
         .card-glass {
-            background-color: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(255, 255, 255, 0.04); /* Lighter glass base */
+            border: 1px solid rgba(255, 255, 255, 0.08); /* Subtle light border */
             backdrop-filter: blur(16px);
             transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
         }
 
         .card-glass:hover {
-            background-color: rgba(255, 255, 255, 0.08);
+            background-color: rgba(255, 255, 255, 0.06);
         }
 
         .card-glass.card-configured:hover {
-            box-shadow: 0 0 12px rgba(255, 149, 0, 0.3);
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.2); /* White glow */
             transform: scale(1.01);
         }
 
         .input-file-style {
-            color: #AAA;
+            color: #B0B0B0; /* Light gray for file input text */
         }
 
         .input-file-style::file-selector-button {
-            background-color: rgba(255, 255, 255, 0.1);
+            background-color: rgba(255, 255, 255, 0.08);
             border: none;
-            color: #ECECEC;
+            color: #E0E0E0;
             border-radius: 8px;
             padding: 0.25rem 0.75rem;
             margin-right: 0.75rem;
@@ -70,7 +70,7 @@
         }
 
         .input-file-style::file-selector-button:hover {
-            background-color: rgba(255, 255, 255, 0.15);
+            background-color: rgba(255, 255, 255, 0.12);
         }
 
         .glow-button {
@@ -78,12 +78,12 @@
         }
 
         .glow-button:hover {
-            box-shadow: 0 0 15px rgba(255, 149, 0, 0.45);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3); /* White glow */
             transform: translateY(-1px);
         }
 
         .title-gradient {
-            background: linear-gradient(120deg, rgba(255, 171, 64, 1) 0%, rgba(255, 204, 128, 0.9) 45%, rgba(255, 111, 0, 1) 100%);
+            background: linear-gradient(120deg, rgba(200, 200, 200, 1) 0%, rgba(255, 255, 255, 0.9) 45%, rgba(150, 150, 150, 1) 100%);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -92,7 +92,7 @@
 
         .title-glow {
             position: relative;
-            filter: drop-shadow(0 0 10px rgba(255, 149, 0, 0.55)) drop-shadow(0 0 24px rgba(255, 111, 0, 0.4));
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.25)) drop-shadow(0 0 24px rgba(255, 255, 255, 0.15)); /* White glow */
             animation: titlePulse 6s ease-in-out infinite;
         }
 
@@ -101,56 +101,56 @@
             position: absolute;
             inset: -8px 0 0 0;
             z-index: -1;
-            opacity: 0.25;
-            background: radial-gradient(circle at top, rgba(255, 149, 0, 0.6), transparent 65%);
+            opacity: 0.15;
+            background: radial-gradient(circle at top, rgba(255, 255, 255, 0.3), transparent 65%); /* White halo */
             filter: blur(20px);
             animation: haloDrift 12s ease-in-out infinite;
         }
 
         .logo-glow {
-            filter: drop-shadow(0 0 12px rgba(255, 149, 0, 0.45));
+            filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.2)); /* White glow */
             animation: logoPulse 5s ease-in-out infinite;
         }
 
         @keyframes titlePulse {
             0%, 100% {
-                filter: drop-shadow(0 0 10px rgba(255, 149, 0, 0.55)) drop-shadow(0 0 24px rgba(255, 111, 0, 0.4));
+                filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.25)) drop-shadow(0 0 24px rgba(255, 255, 255, 0.15));
             }
             50% {
-                filter: drop-shadow(0 0 16px rgba(255, 184, 77, 0.7)) drop-shadow(0 0 32px rgba(255, 140, 0, 0.5));
+                filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.4)) drop-shadow(0 0 32px rgba(255, 255, 255, 0.25));
             }
         }
 
         @keyframes haloDrift {
             0%, 100% {
                 transform: translateY(0) scale(1);
-                opacity: 0.25;
+                opacity: 0.15;
             }
             50% {
                 transform: translateY(6px) scale(1.05);
-                opacity: 0.4;
+                opacity: 0.25;
             }
         }
 
         @keyframes logoPulse {
             0%, 100% {
                 transform: scale(1);
-                filter: drop-shadow(0 0 10px rgba(255, 149, 0, 0.45));
+                filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
             }
             50% {
                 transform: scale(1.03) translateY(-1px);
-                filter: drop-shadow(0 0 18px rgba(255, 184, 77, 0.6));
+                filter: drop-shadow(0 0 18px rgba(255, 255, 255, 0.3));
             }
         }
 
         .icon-accent {
-            color: #ff9626;
-            filter: drop-shadow(0 0 6px rgba(255, 149, 0, 0.35));
+            color: #D0D0D0; /* Light gray icon accent */
+            filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.2));
             transition: filter 0.3s ease;
         }
 
         .icon-accent:hover {
-            filter: drop-shadow(0 0 10px rgba(255, 184, 77, 0.45));
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
         }
 
         .instruction-card {
@@ -194,9 +194,8 @@
             transition: opacity 0.2s ease;
         }
 
-        /* Card configured state */
-        .card-configured {
-            border-color: rgba(255, 150, 38, 0.4) !important;
+        .card-glass.card-configured {
+            border-color: rgba(255, 255, 255, 0.2) !important; /* Brighter border for configured */
         }
 
         /* Download button muted state (no files uploaded) */
@@ -236,6 +235,31 @@
             color: #fca5a5;
         }
 
+        /* Drag and Drop styles */
+        .input-file-area {
+            position: relative;
+            border: 1px dashed rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            transition: border-color 0.2s ease, background-color 0.2s ease;
+        }
+
+        .input-file-area.drag-over {
+            border-color: #ff9626;
+            background-color: rgba(255, 150, 38, 0.1);
+        }
+
+        .input-file-area input[type="file"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
         @keyframes toastIn {
             from { opacity: 0; transform: translateY(6px); }
             to   { opacity: 1; transform: translateY(0); }
@@ -266,8 +290,6 @@
     </script>
 </head>
 <body class="min-h-screen text-gray-100">
-    <canvas id="shader-canvas"></canvas>
-    <div class="shader-overlay"></div>
     <div class="max-w-6xl mx-auto px-4 py-12 relative">
         <div class="flex items-center justify-center mb-3 flex-wrap gap-y-2">
             <img src="assets/playnite-optimized.png" alt="Playnite Logo" class="w-12 h-12 mr-4 drop-shadow-lg logo-glow">
@@ -335,6 +357,13 @@
             </div>
 
             <div class="text-center">
+                <div class="flex justify-center mb-6">
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="normalizeVolume" class="h-4 w-4 rounded cursor-pointer" style="accent-color: #E0E0E0;" checked>
+                        <span class="ml-2 text-sm text-gray-300">Normalize volume (recommended)</span>
+                    </label>
+                    <p class="text-xs text-gray-500 ml-6 hidden md:block">Adjusts audio to a consistent loudness level to prevent clipping.</p>
+                </div>
                 <div class="flex items-center justify-center gap-3 max-w-xl mx-auto flex-wrap">
                     <div class="relative flex-grow min-w-0">
                         <input type="text" id="packName" placeholder="Enter sound pack name" class="w-full py-2.5 px-4 rounded-xl bg-white/10 border border-white/10 focus:border-[#ff9626] focus:outline-none focus:ring-2 focus:ring-[#ff9626] text-white placeholder-gray-400 transition-all duration-300">
@@ -352,6 +381,5 @@
 
     <div id="toast-container" role="region" aria-live="polite" aria-label="Notifications"></div>
     <script src="index.js"></script>
-    <script src="shader-background.js"></script>
 </body>
 </html>
